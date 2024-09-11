@@ -9,9 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.breastcancer.model.Users;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -69,23 +72,27 @@ public class RegisterActivity extends AppCompatActivity {
             } else {
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        DatabaseReference reference = database.getReference().child("users").child(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                        DatabaseReference reference = database.getReference().
+                                child("users").child(auth.getCurrentUser().getUid());
                         StorageReference storageReference = storage.getReference().child("upload").child(auth.getCurrentUser().getUid());
+
                         imgUri = "https://firebasestorage.googleapis.com/v0/b/breastcancer-5c20a.appspot.com/o/Profile_image.jpg?alt=media&token=0dc5040f-1b59-4afe-b06b-9c752a540f44";
+
                         Users users = new Users(auth.getCurrentUser().getUid(), name, email, imgUri);
 
-                        reference.setValue(users).addOnCompleteListener(task1 -> {
-                            if (task1.isSuccessful()) {
-                                startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
-                            } else {
-                                Toast.makeText(RegisterActivity.this, "Error in creating a new user", Toast.LENGTH_SHORT).show();
-                            }
+                        reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task1) {
+                                if (task1.isSuccessful()) {
+                                    startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                                } else {
+                                    Toast.makeText(RegisterActivity.this, "Error in creating a new user", Toast.LENGTH_SHORT).show();
+                                }
+                            };
                         });
 
                     } else {
-                        // Log the error message from Firebase for more details
-                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Unknown error";
-                        Toast.makeText(RegisterActivity.this, "Registration Failed: " + errorMessage, Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "Registration Failed: ", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -95,7 +102,6 @@ public class RegisterActivity extends AppCompatActivity {
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
         });
-
 
     }
 }
