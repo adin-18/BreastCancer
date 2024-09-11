@@ -1,5 +1,6 @@
 package com.example.breastcancer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button signUpButton;
     LinearLayout signInText;
     String imgUri;
+    ProgressDialog progressDialog;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.[a-z]+(\\.[a-z]+)?";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,27 +53,37 @@ public class RegisterActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.signUpButton);
         signUpButton.setBackgroundResource(R.drawable.intro_signin);
 
+        progressDialog= new ProgressDialog(this);
+        progressDialog.setMessage("Please Wait");
+        progressDialog.setCancelable(false);
+
         signInText = findViewById(R.id.signInText);
 
         signUpButton.setOnClickListener(view -> {
+            progressDialog.show();
             String name = regName.getEditableText().toString();
             String email = regEmail.getEditableText().toString();
             String password = regPass.getEditableText().toString();
             String cPassword = regConfirmPass.getEditableText().toString();
 
             if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(cPassword)) {
+                progressDialog.dismiss();
                 Toast.makeText(RegisterActivity.this, "Enter Valid Data", Toast.LENGTH_SHORT).show();
             } else if (!email.matches(emailPattern)) {
+                progressDialog.dismiss();
                 regEmail.setError("Invalid Email");
                 Toast.makeText(RegisterActivity.this, "Invalid Email", Toast.LENGTH_SHORT).show();
             } else if (password.length() <= 6) {
+                progressDialog.dismiss();
                 regPass.setError("Password Too Short");
                 Toast.makeText(RegisterActivity.this, "Please enter more than 6 characters", Toast.LENGTH_SHORT).show();
             } else if (!password.equals(cPassword)) {
+                progressDialog.dismiss();
                 Toast.makeText(RegisterActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             } else {
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        progressDialog.dismiss();
                         DatabaseReference reference = database.getReference().
                                 child("users").child(auth.getCurrentUser().getUid());
                         StorageReference storageReference = storage.getReference().child("upload").child(auth.getCurrentUser().getUid());
@@ -92,6 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
                         });
 
                     } else {
+                        progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, "Registration Failed: ", Toast.LENGTH_LONG).show();
                     }
                 });
