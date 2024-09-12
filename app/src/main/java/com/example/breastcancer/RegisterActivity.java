@@ -96,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task1) {
                                 if (task1.isSuccessful()) {
-                                    startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                 } else {
                                     Toast.makeText(RegisterActivity.this, "Error in creating a new user", Toast.LENGTH_SHORT).show();
                                 }
