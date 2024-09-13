@@ -36,17 +36,17 @@ public class PersonalData extends AppCompatActivity {
             inputBMI = findViewById(R.id.input_bmi1);
             buttonSubmit = findViewById(R.id.button_submit1);
 
-            Button myButton = findViewById(R.id.button_submit1);
+            Button buttonSubmit = findViewById(R.id.button_submit1);
 
             // Set an OnClickListener to the button
-            myButton.setOnClickListener(new View.OnClickListener() {
+            buttonSubmit.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 // Create an Intent to start the new activity
                                                 Intent intent = new Intent(PersonalData.this,QuesActivity.class);
                                                 startActivity(intent);
                                             }
-                                        };
+                                        }
 
             Toast.makeText(PersonalData.this, "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
 
