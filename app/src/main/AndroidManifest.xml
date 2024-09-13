@@ -31,7 +31,7 @@
             android:name=".IntroActivity"
             android:exported="false"
             android:theme="@style/Theme.BreastCancer" />
-        <activity
+    <activity
             android:name=".SplashScreen"
             android:exported="true" >
             <intent-filter>
@@ -40,8 +40,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-    </application>
 
 </manifest>
