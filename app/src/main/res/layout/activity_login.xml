@@ -115,8 +115,20 @@
             android:textColor="@color/black"
             android:textAlignment="center"
             android:background="@drawable/intro_signin"/>
+
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:text="Log Out"
+            android:textSize="20dp"
+            android:fontFamily="serif"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:background="@drawable/intro_signin"/>
     </LinearLayout>
 
 
-
-    </FrameLayout>
+</FrameLayout>
