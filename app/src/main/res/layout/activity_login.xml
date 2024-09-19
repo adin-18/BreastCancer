@@ -104,30 +104,30 @@
             android:background="@drawable/edittextshape"/>
 
         <Button
-            android:layout_width="240dp"
-            android:layout_height="40dp"
             android:id="@+id/signInButton"
-            android:text="Sign In"
-            android:textSize="20dp"
-            android:fontFamily="serif"
-            android:textStyle="bold"
+            android:layout_width="240dp"
+            android:layout_height="48dp"
             android:layout_marginTop="30dp"
-            android:textColor="@color/black"
+            android:background="@drawable/intro_signin"
+            android:fontFamily="serif"
+            android:text="Sign In"
             android:textAlignment="center"
-            android:background="@drawable/intro_signin"/>
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/logout_button"
             android:layout_width="240dp"
-            android:layout_height="40dp"
-            android:text="Log Out"
-            android:textSize="20dp"
-            android:fontFamily="serif"
-            android:textStyle="bold"
+            android:layout_height="48dp"
             android:layout_marginTop="30dp"
-            android:textColor="@color/black"
+            android:background="@drawable/intro_signin"
+            android:fontFamily="serif"
+            android:text="Log Out"
             android:textAlignment="center"
-            android:background="@drawable/intro_signin"/>
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 
