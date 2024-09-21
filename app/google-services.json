@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "473908557793",
+    "project_id": "breastcancer-5c20a",
+    "storage_bucket": "breastcancer-5c20a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473908557793:android:75f071055a83883e8884a0",
+        "android_client_info": {
+          "package_name": "com.example.breastcancer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAIuYademIpqkqhJZUc6fSbsLgWR854JQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

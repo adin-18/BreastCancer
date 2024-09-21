@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Personal_info"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="196dp"
+        android:layout_height="94dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bclogo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
+
+    <TextView
+        android:layout_width="414dp"
+        android:layout_height="46dp"
+        android:layout_gravity="center"
+        android:background="@drawable/intro_signin"
+        android:fontFamily="serif"
+        android:text="Personal Information"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="27dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.331" />
+
+    <EditText
+        android:id="@+id/name_input"
+        android:layout_width="291dp"
+        android:layout_height="66dp"
+        android:layout_gravity="center"
+        android:fontFamily="serif"
+        android:hint="Enter your name"
+        android:textColor="@color/black"
+        android:textColorHint="#FFAC63AF"
+        android:textSize="24dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.472"
+        tools:layout_editor_absoluteX="73dp" />
+
+    <EditText
+        android:id="@+id/age_input"
+        android:layout_width="291dp"
+        android:layout_height="58dp"
+        android:layout_gravity="center"
+        android:fontFamily="serif"
+        android:hint="Enter your age"
+        android:textColor="@color/black"
+        android:textColorHint="#FFAC63AF"
+        android:textSize="24dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.595"
+        tools:layout_editor_absoluteX="73dp" />
+
+    <EditText
+        android:id="@+id/medical_history_input"
+        android:layout_width="293dp"
+        android:layout_height="85dp"
+        android:layout_gravity="center"
+        android:fontFamily="serif"
+        android:hint="Enter your medical history"
+        android:textColor="@color/black"
+        android:textColorHint="#FFAC63AF"
+        android:textSize="24dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.727"
+        tools:layout_editor_absoluteX="73dp" />
+
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="135dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:background="@drawable/intro_signin"
+        android:fontFamily="serif"
+        android:text="Submit"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.887" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
