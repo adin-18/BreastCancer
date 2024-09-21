@@ -7,12 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class PersonalData extends AppCompatActivity {
+public class Personal_info extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_data);
+        setContentView(R.layout.activity_personal_info);
 
 
         Button submitButton = findViewById(R.id.submit_button);
