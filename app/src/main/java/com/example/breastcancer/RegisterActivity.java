@@ -100,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(RegisterActivity.this, "Error in creating a new user", Toast.LENGTH_SHORT).show();
                                 }
-                            };
+                            }
                         });
 
                     } else {
