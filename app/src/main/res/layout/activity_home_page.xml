@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Home_Page">
 
     <!-- Main content including the Toolbar -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,9 +27,9 @@
                 android:id="@+id/hamburger_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu"  <!-- Add your hamburger icon here -->
-            android:layout_gravity="start"
-            android:contentDescription="Menu" />
+                android:src="@drawable/bclogo"
+                android:layout_gravity="start"
+                android:contentDescription="Menu" />
 
             <!-- Profile Picture on the Right -->
             <ImageView
@@ -38,11 +38,11 @@
                 android:layout_height="40dp"
                 android:layout_gravity="end"
                 android:padding="8dp"
-                android:src="@drawable/ic_profile"  <!-- Default profile picture -->
-            android:scaleType="centerCrop"
-            android:contentDescription="Profile Picture"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/circle_background" />
+                android:src="@drawable/bclogo"
+                android:scaleType="centerCrop"
+                android:contentDescription="Profile Picture"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bclogo" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -102,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/drawer_menu"
-        android:background="?attr/colorPrimary" />
-
+        android:background="?attr/colorPrimary"
+        />
+    <!--app:menu="@menu/drawer_menu"-->
 </androidx.drawerlayout.widget.DrawerLayout>

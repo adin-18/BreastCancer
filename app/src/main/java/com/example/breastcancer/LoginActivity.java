@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 progressDialog.dismiss();
-                                startActivity(new Intent(LoginActivity.this, QuesActivity.class));
+                                startActivity(new Intent(LoginActivity.this, Personal_info.class));
                             }else{
                                 progressDialog.dismiss();
                                 Toast.makeText(LoginActivity.this, "Error in Login. Try Again", Toast.LENGTH_SHORT).show();
