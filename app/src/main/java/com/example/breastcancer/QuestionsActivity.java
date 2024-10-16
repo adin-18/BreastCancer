@@ -1,7 +1,8 @@
 package com.example.breastcancer;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,15 +12,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +36,6 @@ public class QuestionsActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
     private CircleImageView profileImageView;
-    private TextView greetingText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +57,11 @@ public class QuestionsActivity extends AppCompatActivity {
         physicalActivityCheckbox = findViewById(R.id.physical_activity_checkbox);
         submitButton = findViewById(R.id.submit_button);
         profileImageView = findViewById(R.id.profile_image);
-        greetingText = findViewById(R.id.greeting_text);
 
         // Set up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // Set up navigation drawer
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // TODO: Set up navigation drawer listener
 
         // Load user data
         loadUserData();
@@ -84,8 +80,6 @@ public class QuestionsActivity extends AppCompatActivity {
             String userName = currentUser.getDisplayName();
             String userEmail = currentUser.getEmail();
             String userPhotoUrl = currentUser.getPhotoUrl() != null ? currentUser.getPhotoUrl().toString() : null;
-
-            greetingText.setText("Hi, " + userName);
 
             if (userPhotoUrl != null && !userPhotoUrl.isEmpty()) {
                 loadProfileImage(userPhotoUrl);
