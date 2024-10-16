@@ -5,50 +5,49 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashScreen extends AppCompatActivity {
 
-    FirebaseAuth auth;
+    private FirebaseAuth auth;
+    private static final int SPLASH_DURATION = 2500; // Duration for splash screen in milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        setFullScreen();
         setContentView(R.layout.activity_splash);
 
-        auth= FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
 
+        // Proceed to the next screen after the splash duration
         runNextScreen();
-        askForFullScreen();
     }
 
     private void runNextScreen() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                // Navigate to IntroActivity if user is not authenticated
                 if (auth.getCurrentUser() == null) {
-                    startActivity(new Intent(SplashScreen.this, IntroActivity.class));
-                    finish();
-                } else {
-                    startActivity(new Intent(SplashScreen.this, QuesActivity.class));
-                    finish();
+                    Intent nextIntent = new Intent(SplashScreen.this, IntroActivity.class);
+                    startActivity(nextIntent);
                 }
+                finish(); // Close splash screen activity
             }
-        }, 2500);
+        }, SPLASH_DURATION);
     }
 
-    private void askForFullScreen() {
+    private void setFullScreen() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                         View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_IMMERSIVE
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // Use IMERSIVE_STICKY for better full-screen experience
         );
     }
 }

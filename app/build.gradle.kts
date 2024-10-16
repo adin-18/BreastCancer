@@ -59,4 +59,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
+    implementation ("com.github.bumptech.glide:glide:4.15.0") // Check for the latest version
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.0") // For annotation processing
+    implementation ("de.hdodenhof:circleimageview:3.1.0") // Check for the latest version
 }
