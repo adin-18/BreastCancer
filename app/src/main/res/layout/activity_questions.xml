@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".QuestionsActivity"
+    android:background="@color/white">
 
     <!-- Main content layout -->
     <LinearLayout
@@ -32,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:text="App Name"
+                    android:text="Breast Cancer"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -51,17 +53,6 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <!-- Greeting Text -->
-        <TextView
-            android:id="@+id/greeting_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hi, User"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_margin="16dp" />
-
         <!-- Personal Questions Form Content -->
         <ScrollView
             android:layout_width="match_parent"
@@ -74,67 +65,91 @@
                 android:padding="16dp"
                 android:background="@color/white">
 
-                <!-- Input fields for age, gender, blood type, checkboxes, and submit button -->
+                <!-- Input fields for name, age, gender, blood type, checkboxes, and submit button -->
+                <EditText
+                    android:id="@+id/name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your name"
+                    android:layout_marginBottom="16dp" />
+
                 <EditText
                     android:id="@+id/age_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter your age"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="What is your gender?"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"/>
 
                 <Spinner
                     android:id="@+id/gender_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown" />
+                    android:spinnerMode="dropdown"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="What is your blood type?"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"/>
 
                 <Spinner
                     android:id="@+id/blood_type_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown" />
+                    android:spinnerMode="dropdown"
+                    android:layout_marginBottom="16dp" />
 
                 <CheckBox
                     android:id="@+id/family_history_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Family history of cancer" />
+                    android:text="Family history of Cancer"
+                    android:layout_marginBottom="8dp" />
 
                 <CheckBox
                     android:id="@+id/smoker_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Smoker" />
+                    android:text="Smoker"
+                    android:layout_marginBottom="8dp" />
 
                 <CheckBox
                     android:id="@+id/alcohol_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Consumes alcohol" />
+                    android:text="Consumes alcohol"
+                    android:layout_marginBottom="8dp" />
 
                 <CheckBox
                     android:id="@+id/physical_activity_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Physically active" />
+                    android:text="Physically active"
+                    android:layout_marginBottom="16dp" />
 
                 <Button
                     android:id="@+id/submit_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Submit"
-                    android:layout_marginTop="16dp" />
+                    android:textSize="15dp"
+                    android:fontFamily="serif"
+                    android:textStyle="bold"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/intro_signin"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
-    <!-- Navigation Drawer (Hamburger Menu) -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#FED0C5"
-        app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
