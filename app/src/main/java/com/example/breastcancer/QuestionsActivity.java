@@ -10,9 +10,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
+import android.widget.ArrayAdapter;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import java.util.HashMap;
 import java.util.Map;
 
+/** @noinspection ALL */
 public class QuestionsActivity extends AppCompatActivity {
 
     private EditText ageInput;
@@ -57,6 +57,18 @@ public class QuestionsActivity extends AppCompatActivity {
         physicalActivityCheckbox = findViewById(R.id.physical_activity_checkbox);
         submitButton = findViewById(R.id.submit_button);
         profileImageView = findViewById(R.id.profile_image);
+
+
+// Inside your onCreate method, add this code after initializing the Spinners
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
+                R.array.gender_array, android.R.layout.simple_spinner_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(genderAdapter);
+
+        ArrayAdapter<CharSequence> bloodTypeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.blood_type_array, android.R.layout.simple_spinner_item);
+        bloodTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        bloodTypeSpinner.setAdapter(bloodTypeAdapter);
 
         // Set up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -99,11 +111,9 @@ public class QuestionsActivity extends AppCompatActivity {
         // Assuming the default profile image is stored at "default_profile_image.jpg" in Firebase Storage
         StorageReference defaultImageRef = mStorage.child("Profile_image.jpg");
 
-        defaultImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(this)
-                    .load(uri)
-                    .into(profileImageView);
-        }).addOnFailureListener(e -> {
+        defaultImageRef.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(this)
+                .load(uri)
+                .into(profileImageView)).addOnFailureListener(e -> {
             // If failed to load the default image, you can set a local drawable as a fallback
             profileImageView.setImageResource(R.drawable.profile_image);
             Toast.makeText(QuestionsActivity.this, "Failed to load profile image", Toast.LENGTH_SHORT).show();

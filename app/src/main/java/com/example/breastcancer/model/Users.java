@@ -1,5 +1,6 @@
 package com.example.breastcancer.model;
 
+/** @noinspection ALL */
 public class Users {
 
     String uid;

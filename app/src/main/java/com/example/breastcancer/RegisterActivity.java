@@ -22,8 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Objects;
-
+/** @noinspection ALL*/
 public class RegisterActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
