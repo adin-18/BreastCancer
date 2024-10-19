@@ -65,7 +65,7 @@
                 android:padding="16dp"
                 android:background="@color/white">
 
-                <!-- Input fields for name, age, gender, blood type, checkboxes, and submit button -->
+                <!-- Name Input -->
                 <EditText
                     android:id="@+id/name_input"
                     android:layout_width="match_parent"
@@ -73,6 +73,7 @@
                     android:hint="Enter your name"
                     android:layout_marginBottom="16dp" />
 
+                <!-- Age Input -->
                 <EditText
                     android:id="@+id/age_input"
                     android:layout_width="match_parent"
@@ -81,34 +82,47 @@
                     android:inputType="number"
                     android:layout_marginBottom="16dp" />
 
+                <!-- BMI Input -->
+                <EditText
+                    android:id="@+id/bmi_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your BMI"
+                    android:inputType="numberDecimal"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- Physical Activity Input -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="What is your gender?"
+                    android:text="Physical Activity Level"
                     android:textSize="16sp"
                     android:layout_marginBottom="8dp"/>
 
                 <Spinner
-                    android:id="@+id/gender_spinner"
+                    android:id="@+id/physical_activity_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="16dp"
+                    android:entries="@array/physical_activity_array"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="What is your blood type?"
+                    android:text="Diet"
                     android:textSize="16sp"
                     android:layout_marginBottom="8dp"/>
 
                 <Spinner
-                    android:id="@+id/blood_type_spinner"
+                    android:id="@+id/diet_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="16dp"
+                    android:entries="@array/diet_array"/>
 
+                <!-- Family History of Cancer Checkbox -->
                 <CheckBox
                     android:id="@+id/family_history_checkbox"
                     android:layout_width="wrap_content"
@@ -116,6 +130,7 @@
                     android:text="Family history of Cancer"
                     android:layout_marginBottom="8dp" />
 
+                <!-- Smoker Checkbox -->
                 <CheckBox
                     android:id="@+id/smoker_checkbox"
                     android:layout_width="wrap_content"
@@ -123,6 +138,7 @@
                     android:text="Smoker"
                     android:layout_marginBottom="8dp" />
 
+                <!-- Alcohol Consumption Checkbox -->
                 <CheckBox
                     android:id="@+id/alcohol_checkbox"
                     android:layout_width="wrap_content"
@@ -130,13 +146,7 @@
                     android:text="Consumes alcohol"
                     android:layout_marginBottom="8dp" />
 
-                <CheckBox
-                    android:id="@+id/physical_activity_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Physically active"
-                    android:layout_marginBottom="16dp" />
-
+                <!-- Submit Button -->
                 <Button
                     android:id="@+id/submit_button"
                     android:layout_width="wrap_content"
@@ -148,6 +158,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_gravity="center"
                     android:background="@drawable/intro_signin"/>
+
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

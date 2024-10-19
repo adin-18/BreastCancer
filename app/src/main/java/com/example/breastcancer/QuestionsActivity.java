@@ -4,14 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.ArrayAdapter;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,22 +22,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.tensorflow.lite.Interpreter;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import java.util.HashMap;
-import java.util.Map;
-
-/** @noinspection ALL */
 public class QuestionsActivity extends AppCompatActivity {
 
-    private EditText ageInput;
-    private Spinner genderSpinner, bloodTypeSpinner;
-    private CheckBox familyHistoryCheckbox, smokerCheckbox, alcoholCheckbox, physicalActivityCheckbox;
+    private EditText ageInput, bmiInput;
+    private Spinner physicalActivitySpinner, dietSpinner;
+    private CheckBox familyHistoryCheckbox, smokerCheckbox, alcoholCheckbox;
     private Button submitButton;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private StorageReference mStorage;
     private CircleImageView profileImageView;
+    private Interpreter tflite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,26 +55,25 @@ public class QuestionsActivity extends AppCompatActivity {
 
         // Initialize views
         ageInput = findViewById(R.id.age_input);
-        genderSpinner = findViewById(R.id.gender_spinner);
-        bloodTypeSpinner = findViewById(R.id.blood_type_spinner);
+        bmiInput = findViewById(R.id.bmi_input);
+        physicalActivitySpinner = findViewById(R.id.physical_activity_spinner);
+        dietSpinner = findViewById(R.id.diet_spinner);
         familyHistoryCheckbox = findViewById(R.id.family_history_checkbox);
         smokerCheckbox = findViewById(R.id.smoker_checkbox);
         alcoholCheckbox = findViewById(R.id.alcohol_checkbox);
-        physicalActivityCheckbox = findViewById(R.id.physical_activity_checkbox);
         submitButton = findViewById(R.id.submit_button);
         profileImageView = findViewById(R.id.profile_image);
 
+        // Set up spinner for Physical Activity and Diet
+        ArrayAdapter<CharSequence> activityAdapter = ArrayAdapter.createFromResource(this,
+                R.array.physical_activity_array, android.R.layout.simple_spinner_item);
+        activityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        physicalActivitySpinner.setAdapter(activityAdapter);
 
-// Inside your onCreate method, add this code after initializing the Spinners
-        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
-                R.array.gender_array, android.R.layout.simple_spinner_item);
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        genderSpinner.setAdapter(genderAdapter);
-
-        ArrayAdapter<CharSequence> bloodTypeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.blood_type_array, android.R.layout.simple_spinner_item);
-        bloodTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        bloodTypeSpinner.setAdapter(bloodTypeAdapter);
+        ArrayAdapter<CharSequence> dietAdapter = ArrayAdapter.createFromResource(this,
+                R.array.diet_array, android.R.layout.simple_spinner_item);
+        dietAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dietSpinner.setAdapter(dietAdapter);
 
         // Set up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -78,10 +83,20 @@ public class QuestionsActivity extends AppCompatActivity {
         // Load user data
         loadUserData();
 
+        // Load the TensorFlow Lite model
+        try {
+            tflite = new Interpreter(loadModelFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error loading model", Toast.LENGTH_SHORT).show();
+            finish(); // Exit if model loading fails
+        }
+
+        // Set onClickListener for submit button
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveUserInputs();
+                saveUserInputsAndPredict();
             }
         });
     }
@@ -89,10 +104,7 @@ public class QuestionsActivity extends AppCompatActivity {
     private void loadUserData() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            String userName = currentUser.getDisplayName();
-            String userEmail = currentUser.getEmail();
             String userPhotoUrl = currentUser.getPhotoUrl() != null ? currentUser.getPhotoUrl().toString() : null;
-
             if (userPhotoUrl != null && !userPhotoUrl.isEmpty()) {
                 loadProfileImage(userPhotoUrl);
             } else {
@@ -102,68 +114,98 @@ public class QuestionsActivity extends AppCompatActivity {
     }
 
     private void loadProfileImage(String imageUrl) {
-        Glide.with(this)
-                .load(imageUrl)
-                .into(profileImageView);
+        Glide.with(this).load(imageUrl).into(profileImageView);
     }
 
     private void loadDefaultProfileImage() {
-        // Assuming the default profile image is stored at "default_profile_image.jpg" in Firebase Storage
         StorageReference defaultImageRef = mStorage.child("Profile_image.jpg");
-
-        defaultImageRef.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(this)
-                .load(uri)
-                .into(profileImageView)).addOnFailureListener(e -> {
-            // If failed to load the default image, you can set a local drawable as a fallback
-            profileImageView.setImageResource(R.drawable.profile_image);
-            Toast.makeText(QuestionsActivity.this, "Failed to load profile image", Toast.LENGTH_SHORT).show();
-        });
+        defaultImageRef.getDownloadUrl().addOnSuccessListener(uri -> Glide.with(this).load(uri).into(profileImageView))
+                .addOnFailureListener(e -> {
+                    profileImageView.setImageResource(R.drawable.profile_image);
+                    Toast.makeText(QuestionsActivity.this, "Failed to load profile image", Toast.LENGTH_SHORT).show();
+                });
     }
 
-    private void saveUserInputs() {
+    private void saveUserInputsAndPredict() {
         String age = ageInput.getText().toString().trim();
-        String gender = genderSpinner.getSelectedItem().toString();
-        String bloodType = bloodTypeSpinner.getSelectedItem().toString();
+        String bmi = bmiInput.getText().toString().trim();
+        String physicalActivity = physicalActivitySpinner.getSelectedItem().toString();
+        String diet = dietSpinner.getSelectedItem().toString();
         boolean familyHistory = familyHistoryCheckbox.isChecked();
         boolean isSmoker = smokerCheckbox.isChecked();
         boolean consumesAlcohol = alcoholCheckbox.isChecked();
-        boolean isPhysicallyActive = physicalActivityCheckbox.isChecked();
 
-        if (validateInputs(age, gender, bloodType)) {
-            // Save to Firebase under the user's ID
-            String userId = mAuth.getCurrentUser().getUid();
-            Map<String, Object> userInputs = new HashMap<>();
-            userInputs.put("age", age);
-            userInputs.put("gender", gender);
-            userInputs.put("bloodType", bloodType);
-            userInputs.put("familyHistory", familyHistory);
-            userInputs.put("isSmoker", isSmoker);
-            userInputs.put("consumesAlcohol", consumesAlcohol);
-            userInputs.put("isPhysicallyActive", isPhysicallyActive);
+        if (validateInputs(age, bmi)) {
+            // Prepare the inputs for the model
+            float[] inputFeatures = new float[] {
+                    Float.parseFloat(age),
+                    Float.parseFloat(bmi),
+                    convertPhysicalActivityToFloat(physicalActivity),
+                    convertDietToFloat(diet),
+                    familyHistory ? 1.0f : 0.0f,
+                    isSmoker ? 1.0f : 0.0f,
+                    consumesAlcohol ? 1.0f : 0.0f
+            };
 
-            mDatabase.child("users").child(userId).child("personalQuestions").setValue(userInputs)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(QuestionsActivity.this, "Data saved successfully", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(QuestionsActivity.this, ResultActivity.class));
-                        finish();
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(QuestionsActivity.this, "Failed to save data: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            // Predict cancer risk using the model
+            CancerPrediction cancerPrediction = new CancerPrediction(tflite);
+            float riskScore = cancerPrediction.predict(inputFeatures);
+
+            // Pass the risk score to the ResultActivity
+            Intent intent = new Intent(QuestionsActivity.this, ResultActivity.class);
+            intent.putExtra("cancerRisk", riskScore);
+            startActivity(intent);
+            finish();
         }
     }
 
-    private boolean validateInputs(String age, String gender, String bloodType) {
+    private boolean validateInputs(String age, String bmi) {
         if (age.isEmpty()) {
             ageInput.setError("Age is required");
             return false;
         }
-        if (gender.equals("Select Gender")) {
-            Toast.makeText(this, "Please select a gender", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (bloodType.equals("Select Blood Type")) {
-            Toast.makeText(this, "Please select a blood type", Toast.LENGTH_SHORT).show();
+        if (bmi.isEmpty()) {
+            bmiInput.setError("BMI is required");
             return false;
         }
         return true;
+    }
+
+    // Method to load the TensorFlow Lite model from the assets folder
+    private MappedByteBuffer loadModelFile() throws IOException {
+        AssetFileDescriptor fileDescriptor = this.getAssets().openFd("logistic_cancer_risk_model.tflite");
+        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = inputStream.getChannel();
+        long startOffset = fileDescriptor.getStartOffset();
+        long declaredLength = fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+    }
+
+    // Convert physical activity level from Spinner to float
+    private float convertPhysicalActivityToFloat(String physicalActivity) {
+        switch (physicalActivity) {
+            case "Low":
+                return 0.0f;
+            case "Moderate":
+                return 0.5f;
+            case "High":
+                return 1.0f;
+            default:
+                return 0.0f;
+        }
+    }
+
+    // Convert diet level from Spinner to float
+    private float convertDietToFloat(String diet) {
+        switch (diet) {
+            case "Poor":
+                return 0.0f;
+            case "Average":
+                return 0.5f;
+            case "Healthy":
+                return 1.0f;
+            default:
+                return 0.0f;
+        }
     }
 }
