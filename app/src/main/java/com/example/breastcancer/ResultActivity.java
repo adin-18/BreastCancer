@@ -1,13 +1,14 @@
 package com.example.breastcancer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import com.google.firebase.auth.FirebaseAuth;
 import android.widget.TextView;
-import androidx.appcompat.widget.Toolbar;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -15,7 +16,8 @@ public class ResultActivity extends AppCompatActivity {
     private TextView cancerRiskPredictionTextView;
     private Button selfExaminationButton;
     private Button doctorDetailsButton;
-    private Button logoutButton;  // Add logout button
+    private Button logoutButton; // Add logout button
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,54 +29,43 @@ public class ResultActivity extends AppCompatActivity {
         cancerRiskPredictionTextView = findViewById(R.id.cancerRiskPrediction);
         selfExaminationButton = findViewById(R.id.self_examination_button);
         doctorDetailsButton = findViewById(R.id.doctor_details_button);
-        logoutButton = findViewById(R.id.logout_button);  // Initialize logout button
+        logoutButton = findViewById(R.id.logout_button); // Initialize logout button
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         // Get Intent Data
         Intent intent = getIntent();
         String userName = intent.getStringExtra("USER_NAME");
-        String cancerRiskPrediction = intent.getStringExtra("CANCER_RISK_PREDICTION");
+        float cancerRiskPrediction = intent.getFloatExtra("CANCER_RISK_PREDICTION", 0); // Default value to avoid NullPointerException
 
         // Set User Name and Prediction
         userNameTextView.setText(userName);
         cancerRiskPredictionTextView.setText("Cancer Risk Prediction: " + cancerRiskPrediction);
 
-        // Toolbar setup
+        // Set onClickListener for Self Examination Button
+        selfExaminationButton.setOnClickListener(v -> {
+            Intent selfExaminationIntent = new Intent(ResultActivity.this, SelfExaminationActivity.class);
+            startActivity(selfExaminationIntent);
+        });
+
+        // Set onClickListener for Doctor Details Button
+        doctorDetailsButton.setOnClickListener(v -> {
+            Intent doctorDetailsIntent = new Intent(ResultActivity.this, DoctorDetailsActivity.class);
+            startActivity(doctorDetailsIntent);
+        });
+
+        // Set onClickListener for Logout Button
+        logoutButton.setOnClickListener(v -> {
+            mAuth.signOut(); // Sign out the user
+            Intent loginIntent = new Intent(ResultActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+            finish(); // Close ResultActivity
+        });
+
+        // Set up toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // Set button click listeners
-        selfExaminationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Start Self Examination Activity
-                Intent selfExamIntent = new Intent(ResultActivity.this, SelfExaminationActivity.class);
-                startActivity(selfExamIntent);
-            }
-        });
-
-        doctorDetailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Start Doctor Details Activity
-                Intent doctorDetailsIntent = new Intent(ResultActivity.this, DoctorDetailsActivity.class);
-                startActivity(doctorDetailsIntent);
-            }
-        });
-
-        // Logout button click listener
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Logout user
-                FirebaseAuth.getInstance().signOut();
-                // Redirect to Login Activity
-                Intent loginIntent = new Intent(ResultActivity.this, LoginActivity.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear all activities
-                startActivity(loginIntent);
-                finish(); // Close current activity
-            }
-        });
     }
 }
-

@@ -42,6 +42,7 @@ public class QuestionsActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private CircleImageView profileImageView;
     private Interpreter tflite;
+    private FirebaseUser currentUser; // Declare currentUser variable
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,16 @@ public class QuestionsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStorage = FirebaseStorage.getInstance().getReference();
+
+        // Check if user is logged in
+        currentUser = mAuth.getCurrentUser(); // Initialize currentUser here
+        if (currentUser == null) {
+            // User is not logged in, redirect to login page
+            Intent intent = new Intent(QuestionsActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish(); // Prevent returning to this activity
+            return; // Exit onCreate
+        }
 
         // Initialize views
         ageInput = findViewById(R.id.age_input);
@@ -102,7 +113,6 @@ public class QuestionsActivity extends AppCompatActivity {
     }
 
     private void loadUserData() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userPhotoUrl = currentUser.getPhotoUrl() != null ? currentUser.getPhotoUrl().toString() : null;
             if (userPhotoUrl != null && !userPhotoUrl.isEmpty()) {
@@ -151,9 +161,10 @@ public class QuestionsActivity extends AppCompatActivity {
             CancerPrediction cancerPrediction = new CancerPrediction(tflite);
             float riskScore = cancerPrediction.predict(inputFeatures);
 
-            // Pass the risk score to the ResultActivity
+            // Pass the risk score and user name to the ResultActivity
             Intent intent = new Intent(QuestionsActivity.this, ResultActivity.class);
-            intent.putExtra("cancerRisk", riskScore);
+            intent.putExtra("CANCER_RISK_PREDICTION", riskScore); // Changed key to match ResultActivity
+            intent.putExtra("USER_NAME", currentUser.getDisplayName()); // Pass username now that currentUser is defined
             startActivity(intent);
             finish();
         }
