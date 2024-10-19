@@ -28,9 +28,6 @@
             android:name=".QuestionsActivity"
             android:exported="false" />
         <activity
-            android:name=".ResultActivity"
-            android:exported="false" />
-        <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
