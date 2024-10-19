@@ -33,23 +33,27 @@ public class DoctorDetailsActivity extends AppCompatActivity {
 
         // Initialize sample doctor names
         doctorNames = new ArrayList<>();
-        doctorNames.add("Dr. Smith");
-        doctorNames.add("Dr. Johnson");
-        doctorNames.add("Dr. Williams");
-        doctorNames.add("Dr. Jones");
-        doctorNames.add("Dr. Brown");
-        doctorNames.add("Dr. Garcia");
-        doctorNames.add("Dr. Martinez");
-        doctorNames.add("Dr. Smith");
-        doctorNames.add("Dr. Johnson");
-        doctorNames.add("Dr. Williams");
-        doctorNames.add("Dr. Jones");
-        doctorNames.add("Dr. Brown");
-        doctorNames.add("Dr. Garcia");
-        doctorNames.add("Dr. Martinez");
-        doctorNames.add("Dr. Martinez");
-        doctorNames.add("Dr. Smith");
-        doctorNames.add("Dr. Johnson");
+        doctorNames.add("Dr. R. Ramesh, Chennai");
+        doctorNames.add("Dr. Pooja N. Sharma, Jaipur");
+        doctorNames.add("Dr. Anupama R. Sharma, Chandigarh");
+        doctorNames.add("Dr. Shanta S. M. Devi, Hyderabad");
+        doctorNames.add("Dr. Ashok V. Suri, Bengaluru");
+        doctorNames.add("Dr. Vidya V. Suryakanta, Hyderabad");
+        doctorNames.add("Dr. Harit Chaturvedi, New Delhi");
+        doctorNames.add("Dr. Satish G. Rao, Ahmedabad");
+        doctorNames.add("Dr. Anjali S. Sharma, Pune");
+        doctorNames.add("Dr. N. P. Kumaran, Chennai");
+        doctorNames.add("Dr. Suman B. Kshirsagar, Mumbai");
+        doctorNames.add("Dr. G. N. Mehta, Ahmedabad");
+        doctorNames.add("Dr. K. K. Sharma, Kolkata");
+        doctorNames.add("Dr. Vinay K. Gupta, Jaipur");
+        doctorNames.add("Dr. Meenakshi K. Mallya, Bengaluru");
+        doctorNames.add("Dr. S. R. Patil, Pune");
+        doctorNames.add("Dr. Ritu D. Bansal, Kolkata");
+        doctorNames.add("Dr. Anshuman Kumar, New Delhi");
+        doctorNames.add("Dr. Shyam Sundar, Chandigarh");
+        doctorNames.add("Dr. Pankaj S. Dhananjay, Mumbai");
+        doctorNames.add("Dr. N. P. Kumaran, Chennai");
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
