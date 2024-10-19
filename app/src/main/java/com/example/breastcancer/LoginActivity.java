@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         dismissProgressDialog(); // Call without message
-                        startActivity(new Intent(LoginActivity.this, QuestionsActivity.class));
+                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     } else {
                         dismissProgressDialog("Error in Login. Try Again");
                         // Optionally log the error for debugging

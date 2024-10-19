@@ -159,6 +159,23 @@
                     android:layout_gravity="center"
                     android:background="@drawable/intro_signin"/>
 
+
+                <LinearLayout
+                    android:id="@+id/result_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/result_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
