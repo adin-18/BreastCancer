@@ -60,9 +60,8 @@
         <item>High</item>
     </string-array>
     <string-array name="diet_array">
-        <item>Poor</item>
-        <item>Average</item>
         <item>Healthy</item>
+        <item>Unhealthy</item>
     </string-array>
 
 </resources>
